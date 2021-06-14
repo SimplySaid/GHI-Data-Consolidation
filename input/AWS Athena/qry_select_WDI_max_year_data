@@ -1,0 +1,17 @@
+SELECT a.country_name,
+         a.indicator_name,
+         a.year,
+         a.measure
+FROM "ghidata"."worldbank" a
+INNER JOIN 
+    (SELECT country_name,
+         MIN(year) AS MaxYear,
+     indicator_name
+    FROM "ghidata"."worldbank"
+     WHERE measure IS NOT NULL
+    GROUP BY  country_name, indicator_name) b
+    ON a.country_name = b.country_name
+        AND a."year" = b.MaxYear
+        AND a.indicator_name = b.indicator_name
+WHERE measure IS NOT NULL
+ORDER BY  country_name
