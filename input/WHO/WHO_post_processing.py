@@ -27,4 +27,4 @@ df['Country Code'] = df['Country'].apply(lambda x: coco.convert(names = x, to = 
 
 
 #Outputs to target file
-df.to_csv(os.path.join(os.path.dirname(__file__), OUTPUT_FILE_PATH))
+df.to_csv(os.path.join(os.path.dirname(__file__), OUTPUT_FILE_PATH), index=False)
