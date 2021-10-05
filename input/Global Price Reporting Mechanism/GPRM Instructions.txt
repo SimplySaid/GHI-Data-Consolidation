@@ -1,0 +1,5 @@
+1. https://apps.who.int/hiv/amds/price/hdd/
+2. Click ... Top Right of Table
+3. Export Summarized Data as CSV
+4. Save file name as "GPRM Source.csv"
+5. This file does not need Pentaho, run Python and upload to AWS

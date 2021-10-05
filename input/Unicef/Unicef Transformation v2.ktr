@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>GHDx_pentaho</name>
+    <name>Unicef Transformation v2</name>
     <description />
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -427,9 +428,9 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2021/07/06 22:19:44.252</created_date>
+    <created_date>2021/06/27 13:48:43.810</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2021/07/06 22:19:44.252</modified_date>
+    <modified_date>2021/06/27 13:48:43.810</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -437,7 +438,7 @@
   </notepads>
   <order>
     <hop>
-      <from>Text file input</from>
+      <from>Microsoft Excel Input</from>
       <to>Select values</to>
       <enabled>Y</enabled>
     </hop>
@@ -448,23 +449,23 @@
     </hop>
     <hop>
       <from>Formula</from>
-      <to>Sort rows</to>
+      <to>Formula 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows</from>
-      <to>Group by</to>
+      <from>Formula 2</from>
+      <to>Select values 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Group by</from>
+      <from>Select values 2</from>
       <to>Text file output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Formula</name>
-    <type>Formula</type>
+    <name>Microsoft Excel Input</name>
+    <type>ExcelInput</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -473,88 +474,307 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <formula>
-      <field_name>age</field_name>
-      <formula_string>IF([age] = "15 to 19"; "Adult"; 
-IF([age] = "20 plus"; "Adult"; [age])
-)</formula_string>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <replace_field>age</replace_field>
-    </formula>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>336</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Group by</name>
-    <type>GroupBy</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <all_rows>N</all_rows>
-    <ignore_aggregate>N</ignore_aggregate>
-    <field_ignore />
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>grp</prefix>
-    <add_linenr>N</add_linenr>
-    <linenr_fieldname />
-    <give_back_row>Y</give_back_row>
-    <group>
-      <field>
-        <name>measure</name>
-      </field>
-      <field>
-        <name>Country</name>
-      </field>
-      <field>
-        <name>age</name>
-      </field>
-      <field>
-        <name>cause</name>
-      </field>
-      <field>
-        <name>metric</name>
-      </field>
-      <field>
-        <name>year</name>
-      </field>
-    </group>
+    <header>Y</header>
+    <noempty>Y</noempty>
+    <stoponempty>N</stoponempty>
+    <filefield />
+    <sheetfield />
+    <sheetrownumfield />
+    <rownumfield />
+    <sheetfield />
+    <filefield />
+    <limit>0</limit>
+    <encoding />
+    <add_to_result_filenames>Y</add_to_result_filenames>
+    <accept_filenames>N</accept_filenames>
+    <accept_field />
+    <accept_stepname />
+    <file>
+      <name>C:\Users\alex\Documents\Global Health Impact Organization\GHI-Data-Consolidation\input\Unicef\GLOBAL_DATAFLOW_2010-2021(1).xlsx</name>
+      <filemask />
+      <exclude_filemask />
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
     <fields>
       <field>
-        <aggregate>val</aggregate>
-        <subject>val</subject>
-        <type>SUM</type>
-        <valuefield />
+        <name>Geographic area</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
       </field>
       <field>
-        <aggregate>upper</aggregate>
-        <subject>upper</subject>
-        <type>SUM</type>
-        <valuefield />
+        <name>Indicator</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
       </field>
       <field>
-        <aggregate>lower</aggregate>
-        <subject>lower</subject>
-        <type>SUM</type>
-        <valuefield />
+        <name>Sex</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>TIME_PERIOD</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>OBS_VALUE</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Unit multiplier</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Unit of measure</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Observation Status</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Observation confidentaility</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>LOWER_BOUND</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>UPPER_BOUND</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>WGTD_SAMPL_SIZE</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>OBS_FOOTNOTE</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>SERIES_FOOTNOTE</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>DATA_SOURCE</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>SOURCE_LINK</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>CUSTODIAN</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Time period activity related to when the data are collected</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>REF_PERIOD</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>COVERAGE_TIME</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+      </field>
+      <field>
+        <name>Current age</name>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+        <format />
+        <currency />
+        <decimal />
+        <group />
       </field>
     </fields>
+    <sheets>
+      <sheet>
+        <name>Unicef data</name>
+        <startrow>0</startrow>
+        <startcol>0</startcol>
+      </sheet>
+    </sheets>
+    <strict_types>N</strict_types>
+    <error_ignored>N</error_ignored>
+    <error_line_skipped>N</error_line_skipped>
+    <bad_line_files_destination_directory />
+    <bad_line_files_extension>warning</bad_line_files_extension>
+    <error_line_files_destination_directory />
+    <error_line_files_extension>error</error_line_files_extension>
+    <line_number_files_destination_directory />
+    <line_number_files_extension>line</line_number_files_extension>
+    <shortFileFieldName />
+    <pathFieldName />
+    <hiddenFieldName />
+    <lastModificationTimeFieldName />
+    <uriNameFieldName />
+    <rootUriNameFieldName />
+    <extensionFieldName />
+    <sizeFieldName />
+    <spreadsheet_type>SAX_POI</spreadsheet_type>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -563,7 +783,7 @@ IF([age] = "20 plus"; "Adult"; [age])
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
+      <xloc>208</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
@@ -580,27 +800,124 @@ IF([age] = "20 plus"; "Adult"; [age])
       <schema_name />
     </partitioning>
     <fields>
+      <field>
+        <name>Geographic area</name>
+        <rename />
+      </field>
+      <field>
+        <name>Indicator</name>
+        <rename />
+      </field>
+      <field>
+        <name>Sex</name>
+        <rename />
+      </field>
+      <field>
+        <name>TIME_PERIOD</name>
+        <rename />
+      </field>
+      <field>
+        <name>OBS_VALUE</name>
+        <rename />
+      </field>
+      <field>
+        <name>Unit multiplier</name>
+        <rename />
+      </field>
+      <field>
+        <name>Unit of measure</name>
+        <rename />
+      </field>
+      <field>
+        <name>Observation Status</name>
+        <rename />
+      </field>
+      <field>
+        <name>Observation confidentaility</name>
+        <rename />
+      </field>
+      <field>
+        <name>LOWER_BOUND</name>
+        <rename />
+      </field>
+      <field>
+        <name>UPPER_BOUND</name>
+        <rename />
+      </field>
+      <field>
+        <name>WGTD_SAMPL_SIZE</name>
+        <rename />
+      </field>
+      <field>
+        <name>OBS_FOOTNOTE</name>
+        <rename />
+      </field>
+      <field>
+        <name>SERIES_FOOTNOTE</name>
+        <rename />
+      </field>
+      <field>
+        <name>DATA_SOURCE</name>
+        <rename />
+      </field>
+      <field>
+        <name>SOURCE_LINK</name>
+        <rename />
+      </field>
+      <field>
+        <name>CUSTODIAN</name>
+        <rename />
+      </field>
+      <field>
+        <name>Time period activity related to when the data are collected</name>
+        <rename />
+      </field>
+      <field>
+        <name>REF_PERIOD</name>
+        <rename />
+      </field>
+      <field>
+        <name>COVERAGE_TIME</name>
+        <rename />
+      </field>
+      <field>
+        <name>Current age</name>
+        <rename />
+      </field>
       <select_unspecified>N</select_unspecified>
       <remove>
-        <name>sex</name>
+        <name>Sex</name>
       </remove>
-      <meta>
-        <name>location</name>
-        <rename>Country</rename>
-        <type>String</type>
-        <length>50</length>
-        <precision>-2</precision>
-        <conversion_mask />
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale />
-        <date_format_timezone />
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding />
-        <decimal_symbol />
-        <grouping_symbol />
-        <currency_symbol />
-        <storage_type />
-      </meta>
+      <remove>
+        <name>Observation Status</name>
+      </remove>
+      <remove>
+        <name>Observation confidentaility</name>
+      </remove>
+      <remove>
+        <name>WGTD_SAMPL_SIZE</name>
+      </remove>
+      <remove>
+        <name>OBS_FOOTNOTE</name>
+      </remove>
+      <remove>
+        <name>SERIES_FOOTNOTE</name>
+      </remove>
+      <remove>
+        <name>SOURCE_LINK</name>
+      </remove>
+      <remove>
+        <name>CUSTODIAN</name>
+      </remove>
+      <remove>
+        <name>Time period activity related to when the data are collected</name>
+      </remove>
+      <remove>
+        <name>REF_PERIOD</name>
+      </remove>
+      <remove>
+        <name>COVERAGE_TIME</name>
+      </remove>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -610,14 +927,14 @@ IF([age] = "20 plus"; "Adult"; [age])
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
+      <xloc>352</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Sort rows</name>
-    <type>SortRows</type>
+    <name>Formula</name>
+    <type>Formula</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -626,63 +943,38 @@ IF([age] = "20 plus"; "Adult"; [age])
       <method>none</method>
       <schema_name />
     </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory />
-    <compress>N</compress>
-    <compress_variable />
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>measure</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>Country</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>age</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>cause</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>metric</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>year</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
+    <formula>
+      <field_name>Indicator</field_name>
+      <formula_string>[Indicator] &amp; " (" &amp; [Unit of Measure] &amp; ")"</formula_string>
+      <value_type>None</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field>Indicator</replace_field>
+    </formula>
+    <formula>
+      <field_name>OBS_VALUE</field_name>
+      <formula_string>IF([Unit Multiplier]="Thousands";[OBS_VALUE]*1000;IF([Unit Multiplier]="Tens";[OBS_VALUE]*10;IF([Unit Multiplier]="Units";[OBS_VALUE];[OBS_VALUE])))</formula_string>
+      <value_type>Number</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field>OBS_VALUE</replace_field>
+    </formula>
+    <formula>
+      <field_name>LOWER_BOUND</field_name>
+      <formula_string>IF([Unit Multiplier]="Thousands";[LOWER_BOUND]*1000;IF([Unit Multiplier]="Tens";[LOWER_BOUND]*10;IF([Unit Multiplier]="Units";[LOWER_BOUND];[LOWER_BOUND])))</formula_string>
+      <value_type>None</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field>LOWER_BOUND</replace_field>
+    </formula>
+    <formula>
+      <field_name>UPPER_BOUND</field_name>
+      <formula_string>IF([Unit Multiplier]="Thousands";[UPPER_BOUND]*1000;IF([Unit Multiplier]="Tens";[UPPER_BOUND]*10;IF([Unit Multiplier]="Units";[UPPER_BOUND];[UPPER_BOUND])))</formula_string>
+      <value_type>None</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field>UPPER_BOUND</replace_field>
+    </formula>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -691,246 +983,7 @@ IF([age] = "20 plus"; "Adult"; [age])
       </output>
     </remotesteps>
     <GUI>
-      <xloc>432</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Text file input</name>
-    <type>TextFileInput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <accept_filenames>N</accept_filenames>
-    <passing_through_fields>N</passing_through_fields>
-    <accept_field />
-    <accept_stepname />
-    <separator>,</separator>
-    <enclosure>"</enclosure>
-    <enclosure_breaks>N</enclosure_breaks>
-    <escapechar />
-    <header>Y</header>
-    <nr_headerlines>1</nr_headerlines>
-    <footer>N</footer>
-    <nr_footerlines>1</nr_footerlines>
-    <line_wrapped>N</line_wrapped>
-    <nr_wraps>1</nr_wraps>
-    <layout_paged>N</layout_paged>
-    <nr_lines_per_page>80</nr_lines_per_page>
-    <nr_lines_doc_header>0</nr_lines_doc_header>
-    <noempty>Y</noempty>
-    <include>N</include>
-    <include_field />
-    <rownum>N</rownum>
-    <rownumByFile>N</rownumByFile>
-    <rownum_field />
-    <format>mixed</format>
-    <encoding />
-    <length>Characters</length>
-    <add_to_result_filenames>Y</add_to_result_filenames>
-    <file>
-      <name>C:\Users\alex\Documents\Global Health Impact Organization\GHI-Data-Consolidation\input\GHDx\</name>
-      <filemask>.*csv</filemask>
-      <exclude_filemask />
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-      <type>CSV</type>
-      <compression>None</compression>
-    </file>
-    <filters>
-    </filters>
-    <fields>
-      <field>
-        <name>measure</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>30</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>location</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>50</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>sex</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>4</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>age</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>8</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>cause</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>42</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>metric</name>
-        <type>String</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>7</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>year</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>val</name>
-        <type>BigNumber</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>22</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>upper</name>
-        <type>BigNumber</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>22</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>lower</name>
-        <type>BigNumber</type>
-        <format />
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif>-</nullif>
-        <ifnull />
-        <position>-1</position>
-        <length>22</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-    </fields>
-    <limit>0</limit>
-    <error_ignored>N</error_ignored>
-    <skip_bad_files>N</skip_bad_files>
-    <file_error_field />
-    <file_error_message_field />
-    <error_line_skipped>N</error_line_skipped>
-    <error_count_field />
-    <error_fields_field />
-    <error_text_field />
-    <bad_line_files_destination_directory />
-    <bad_line_files_extension>warning</bad_line_files_extension>
-    <error_line_files_destination_directory />
-    <error_line_files_extension>error</error_line_files_extension>
-    <line_number_files_destination_directory />
-    <line_number_files_extension>line</line_number_files_extension>
-    <date_format_lenient>Y</date_format_lenient>
-    <date_format_locale>en_US</date_format_locale>
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>112</xloc>
+      <xloc>496</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
@@ -953,14 +1006,14 @@ IF([age] = "20 plus"; "Adult"; [age])
     <header>Y</header>
     <footer>N</footer>
     <format>DOS</format>
-    <compression>GZip</compression>
-    <encoding />
+    <compression>None</compression>
+    <encoding>windows-1252</encoding>
     <endedLine />
     <fileNameInField>N</fileNameInField>
     <fileNameField />
     <create_parent_folder>Y</create_parent_folder>
     <file>
-      <name>C:\Users\alex\Documents\Global Health Impact Organization\GHI-Data-Consolidation\input\GHDx\post_processing\GHDx_Pentaho_output</name>
+      <name>C:\Users\alex\Documents\Global Health Impact Organization\GHI-Data-Consolidation\input\Unicef\post_processing\Unicef_pentaho_output</name>
       <is_command>N</is_command>
       <servlet_output>N</servlet_output>
       <do_not_open_new_file_init>N</do_not_open_new_file_init>
@@ -987,7 +1040,112 @@ IF([age] = "20 plus"; "Adult"; [age])
       </output>
     </remotesteps>
     <GUI>
-      <xloc>672</xloc>
+      <xloc>832</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>Geographic area</name>
+        <rename>Country</rename>
+      </field>
+      <field>
+        <name>Indicator</name>
+        <rename />
+      </field>
+      <field>
+        <name>TIME_PERIOD</name>
+        <rename />
+      </field>
+      <field>
+        <name>OBS_VALUE</name>
+        <rename />
+      </field>
+      <field>
+        <name>Unit multiplier</name>
+        <rename />
+      </field>
+      <field>
+        <name>Unit of measure</name>
+        <rename />
+      </field>
+      <field>
+        <name>LOWER_BOUND</name>
+        <rename />
+      </field>
+      <field>
+        <name>UPPER_BOUND</name>
+        <rename />
+      </field>
+      <field>
+        <name>DATA_SOURCE</name>
+        <rename />
+      </field>
+      <field>
+        <name>Current age</name>
+        <rename />
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>Unit multiplier</name>
+      </remove>
+      <remove>
+        <name>Unit of measure</name>
+      </remove>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>720</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Formula 2</name>
+    <type>Formula</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <formula>
+      <field_name>OBS_VALUE</field_name>
+      <formula_string>IF([Unit of Measure] = "%";[OBS_VALUE]/100;[OBS_VALUE])</formula_string>
+      <value_type>None</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field>OBS_VALUE</replace_field>
+    </formula>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>

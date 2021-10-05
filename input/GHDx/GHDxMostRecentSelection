@@ -1,0 +1,29 @@
+SELECT a.measure,
+         a.country,
+         a.age,
+         a.cause,
+         a.metric,
+         a.year,
+         a.val
+FROM "ghidata"."ghdx" a
+INNER JOIN 
+    (SELECT measure,
+         country,
+         age,
+         cause,
+         metric,
+         MAX(year) AS MaxYear
+    FROM "ghidata"."ghdx"
+    WHERE val IS NOT NULL
+            AND metric <> 'Rate'
+            AND val <> '0.0'
+    GROUP BY  measure, country, age, cause, metric) b
+    ON a.country = b.country
+        AND a.age = b.age
+        AND a."year" = b.MaxYear
+        AND a.measure = b.measure
+        AND a.cause = b.cause
+        AND a.metric = b.metric
+WHERE a.val IS NOT NULL
+        AND a.metric <> 'Rate'
+ORDER BY  measure, country, age, cause, metric
