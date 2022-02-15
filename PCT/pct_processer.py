@@ -107,7 +107,7 @@ all_parsed_data.insert(1, 'iso3_location', all_parsed_data['location'].apply(lam
 all_parsed_data = all_parsed_data.drop('country', 1)
 
 #Adding filter
-all_parsed_data = all_parsed_data.loc[all_parsed_data['year'].isin(['2017'])]
+all_parsed_data = all_parsed_data.loc[all_parsed_data['year'].isin(['2015'])]
 
 #Getting unique grouping
 all_parsed_data = all_parsed_data.sort_values('year').groupby(['location', 'iso3_location', 'cause', 'disease']).tail(1)
@@ -125,4 +125,4 @@ data.columns = [hdr.replace("('sum', 'val',", "").replace("'", "").replace(",","
                 for hdr in data.columns]
 
 #Outputs to target file
-data.to_excel(os.path.join(os.path.dirname(__file__), 'pct_output.xlsx'), index=False)
+data.to_excel(os.path.join(os.path.dirname(__file__), '2015_pct_output.xlsx'), index=False)

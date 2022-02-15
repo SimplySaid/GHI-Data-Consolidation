@@ -44,13 +44,13 @@ def parseIHME(filters, p_index, p_columns, p_values = ['val']):
     data.columns = [hdr.replace("('sum', 'val',", "").replace("'", "").replace(",","") \
                     for hdr in data.columns]
 
-    data.to_excel('2017_output.xlsx', index = False)
+    data.to_excel('2015_output.xlsx', index = False)
 
 parseIHME(
     filters = {
         #'measure': ['DALYs (Disability-Adjusted Life Years)'],
         #'metric': ['Number']
-        'year': ['2017'],
+        'year': ['2015'],
     },
     p_index = ['location', 'iso3_location'],
     p_columns = ['cause', 'age', 'measure']
