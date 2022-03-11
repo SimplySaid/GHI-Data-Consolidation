@@ -24,7 +24,7 @@ for filename in filenames:
     else:
         raise RuntimeError('File extension not recognized')
 
-    # If the first row is for includes, the re-read the dataframe starting from second row
+    # Checks if first row contains includes, the re-read the dataframe starting from second row
     # Definitely not the most elegant way to do this
     file_headers = list(file)
     if 'include' in file_headers:
