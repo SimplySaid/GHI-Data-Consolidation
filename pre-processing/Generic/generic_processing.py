@@ -15,11 +15,10 @@ Year Consolidation: True/False (If true, then uses this year for year consolidat
 import country_converter as coco
 import pandas as pd
 import numpy as np
-import csv
 from glob import glob
 import os
-import cmd
-import click
+from configobj import ConfigObj
+import generic_processing_config as config
 
 # Default column names and required
 DEFAULT_COLUMN_NAMES = {
@@ -30,7 +29,7 @@ DEFAULT_COLUMN_NAMES = {
 
 def fix_column_headers(df):
     df_column_headers = list(df.columns.values)
-
+    print(f"Column Headers:\n {df_column_headers}")
     for key, value in DEFAULT_COLUMN_NAMES.items():
         # for header in df_column_headers:
         #     if header.lower() == key:
@@ -73,15 +72,32 @@ def pivot_normalized_data(df, columns, index):
         )
     except:
         print('Error Pivoting Data')
-
     return df
 
+def handle_normalization(df):
+    is_normalized = input("Does the data need to be pivoted? Enter Yes, any other input will continue")
+    if (is_normalized.upper() != "YES"):
+        return df
+    else:
+        pivot_column = None
+        df_column_headers = list(df.columns.values)
+
+        while pivot_column not in df_column_headers and pivot_column.upper() != "EXIT":
+            print(f"Column Headers:\n {df_column_headers}")
+            pivot_column = input("What column do you need to pivot on? (Enter column name or exit)")
+        
 def process_generic_data(year = None, year_consolidation = False):
-    data_path = (r'input')
+    data_path = (config.FILE_PATHS['INPUT_FOLDER'])
 
     filenames = glob(data_path + "\[!~]*.xlsx") + glob(data_path + "\[!~]*.csv") + glob(data_path + "\[!~]*.xls")
 
     for filename in filenames:
+
+        config_writer = ConfigObj()
+        config_writer.filename = filename + ".ini"
+        config_writer[filename] = config.CONFIGURATION_OPTIONS
+        config_writer.write()
+        continue
 
         # Generate Inputs
         print("Processing" + " " + filename + ":")
@@ -148,6 +164,6 @@ def process_generic_data(year = None, year_consolidation = False):
 
         file = file.sort_values('location_name')
 
-        file.to_excel('./output/' + filename.split('\\')[1] + '_output.xlsx', index = False)
+        file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + filename.split('\\')[1] + '_output.xlsx', index = False)
 
 process_generic_data(None, True)
