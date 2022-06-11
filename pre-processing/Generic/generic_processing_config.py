@@ -1,6 +1,7 @@
 FILE_PATHS = {
     "INPUT_FOLDER" : "./input/",
-    "OUTPUT_FOLDER" : "./output/"
+    "OUTPUT_FOLDER" : "./output/",
+    "CONFIG_FILE" : "./input/config.ini"
 }
 
 CONFIGURATION_OPTIONS = {
@@ -21,15 +22,3 @@ CONFIGURATION_OPTIONS = {
         "source_year" : "",
     },
 }
-
-
-# PARAMETERS = {
-#     "normalize_rows" : False,
-#     "add_citations" : True,
-# }
-
-# CITATIONS = {
-#     "source_name": "",
-#     "source_download_link": "",
-#     "source_year" : ""
-# }

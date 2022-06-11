@@ -19,6 +19,7 @@ from glob import glob
 import os
 from configobj import ConfigObj
 import generic_processing_config as config
+import yaml_utils
 
 # Default column names and required
 DEFAULT_COLUMN_NAMES = {
@@ -86,24 +87,11 @@ def handle_normalization(df):
             print(f"Column Headers:\n {df_column_headers}")
             pivot_column = input("What column do you need to pivot on? (Enter column name or exit)")
         
-def process_generic_data(year = None, year_consolidation = False):
-    data_path = (config.FILE_PATHS['INPUT_FOLDER'])
-
-    filenames = glob(data_path + "\[!~]*.xlsx") + glob(data_path + "\[!~]*.csv") + glob(data_path + "\[!~]*.xls")
-
-    for filename in filenames:
-
-        config_writer = ConfigObj()
-        config_writer.filename = filename + ".ini"
-        config_writer[filename] = config.CONFIGURATION_OPTIONS
-        config_writer.write()
-        continue
-
-        # Generate Inputs
-        print("Processing" + " " + filename + ":")
-        # citation = get_citations()
-
+def process_generic_data(files, settings):
+    for filename in files:
         ext = os.path.splitext(filename)[1]
+        short_filename = os.path.basename(filename)
+        file_settings = yaml_utils.read_yaml()[short_filename]
 
         if ext == '.csv':
             file = pd.read_csv(filename, encoding='latin-1')
@@ -166,4 +154,9 @@ def process_generic_data(year = None, year_consolidation = False):
 
         file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + filename.split('\\')[1] + '_output.xlsx', index = False)
 
-process_generic_data(None, True)
+
+data_path = (config.FILE_PATHS['INPUT_FOLDER'])
+file_path_names = glob(data_path + "\[!~]*.xlsx") + glob(data_path + "\[!~]*.csv") + glob(data_path + "\[!~]*.xls")
+file_names = [os.path.basename(x) for x in file_path_names]
+
+process_generic_data(file_path_names, None)
