@@ -18,8 +18,10 @@ import numpy as np
 from glob import glob
 import os
 from configobj import ConfigObj
+from sqlalchemy import false
 import generic_processing_config as config
 import yaml_utils
+from generic_processing_config import CONFIGURATION_OPTIONS
 
 # Default column names and required
 DEFAULT_COLUMN_NAMES = {
@@ -32,13 +34,6 @@ def fix_column_headers(df):
     df_column_headers = list(df.columns.values)
     print(f"Column Headers:\n {df_column_headers}")
     for key, value in DEFAULT_COLUMN_NAMES.items():
-        # for header in df_column_headers:
-        #     if header.lower() == key:
-        #         df.rename(columns={
-        #             header: key
-        #         })
-        #         df_column_headers = list(df.columns.values)
-        #         break
         if key in df_column_headers:
             continue
         else:
@@ -86,13 +81,14 @@ def handle_normalization(df):
         while pivot_column not in df_column_headers and pivot_column.upper() != "EXIT":
             print(f"Column Headers:\n {df_column_headers}")
             pivot_column = input("What column do you need to pivot on? (Enter column name or exit)")
-        
-def process_generic_data(files, settings):
+
+def process_generic_data(files, generate_config = False):
+    #Should refactor this beginning part and extract function
+    all_config_data = dict()
     for filename in files:
         ext = os.path.splitext(filename)[1]
-        short_filename = os.path.basename(filename)
-        file_settings = yaml_utils.read_yaml()[short_filename]
 
+        # file_settings = yaml_utils.read_yaml()[short_filename]
         if ext == '.csv':
             file = pd.read_csv(filename, encoding='latin-1')
         elif ext == '.xls':
@@ -101,6 +97,13 @@ def process_generic_data(files, settings):
             file = pd.read_excel(filename, engine='openpyxl')
         else:
             raise RuntimeError('File extension not recognized')
+
+        if (generate_config):
+            short_filename = str(os.path.basename(filename))
+            generated_options = yaml_utils.generate_config_options(file)
+            all_config_data[short_filename] = generated_options
+            generated_options = {}
+            continue
 
         file.columns = file.columns.str.lower()
         file = fix_column_headers(file)
@@ -153,10 +156,13 @@ def process_generic_data(files, settings):
         file = file.sort_values('location_name')
 
         file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + filename.split('\\')[1] + '_output.xlsx', index = False)
+    if generate_config:
+        print(all_config_data)
+        yaml_utils.generate_config_file([], all_config_data)
 
 
 data_path = (config.FILE_PATHS['INPUT_FOLDER'])
 file_path_names = glob(data_path + "\[!~]*.xlsx") + glob(data_path + "\[!~]*.csv") + glob(data_path + "\[!~]*.xls")
 file_names = [os.path.basename(x) for x in file_path_names]
 
-process_generic_data(file_path_names, None)
+process_generic_data(file_path_names, True)
