@@ -1,8 +1,8 @@
-import generic_processing_config as config
+import generic_processing_config as config_options
 import yaml
 import copy
 
-DEFAULT_CONFIG_OPTIONS = config.CONFIGURATION_OPTIONS
+DEFAULT_CONFIG_OPTIONS = config_options.CONFIGURATION_OPTIONS
 
 def generate_config_file(fileNames, CONFIG_OPTIONS = None):
     output_json = dict()
@@ -17,7 +17,7 @@ def generate_config_file(fileNames, CONFIG_OPTIONS = None):
                 output_json[file] = CONFIG_OPTIONS
 
     yaml.Dumper.ignore_aliases = lambda *args : True
-    with open(config.FILE_PATHS['CONFIG_FILE'], 'w') as outfile:
+    with open(config_options.FILE_PATHS['CONFIG_FILE'], 'w') as outfile:
         yaml.dump(output_json, outfile)
 
 # Know this code is bad, didn't have time to write it properly
@@ -42,8 +42,8 @@ def generate_config_options(df):
 
 def read_yaml():
     try:
-        with open(config.FILE_PATHS["CONFIG_FILE"], 'r') as f:
-            yaml_to_json = yaml.load(f)
+        with open(config_options.FILE_PATHS["CONFIG_FILE"], 'r') as f:
+            yaml_to_json = yaml.safe_load(f)
         return yaml_to_json
     except:
         return None

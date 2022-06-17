@@ -17,7 +17,6 @@ import pandas as pd
 import numpy as np
 from glob import glob
 import os
-from configobj import ConfigObj
 import generic_processing_config as config
 import yaml_utils
 from generic_processing_config import CONFIGURATION_OPTIONS
@@ -149,6 +148,9 @@ def process_generic_data(files, generate_config = False):
             )
 
         file = file.sort_values('location_name')
+
+        if not os.path.exists(config.FILE_PATHS['OUTPUT_FOLDER']):
+            os.makedirs(config.FILE_PATHS['OUTPUT_FOLDER'])
 
         file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + os.path.splitext(short_filename)[0] + '_output.xlsx', index = False)
     if generate_config:
