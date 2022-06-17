@@ -1,6 +1,6 @@
 import generic_processing_config as config
 import yaml
-import json
+import copy
 
 DEFAULT_CONFIG_OPTIONS = config.CONFIGURATION_OPTIONS
 
@@ -22,7 +22,7 @@ def generate_config_file(fileNames, CONFIG_OPTIONS = None):
 
 # Know this code is bad, didn't have time to write it properly
 def generate_config_options(df):
-    config_options = DEFAULT_CONFIG_OPTIONS
+    config_options = copy.deepcopy(DEFAULT_CONFIG_OPTIONS)
     file_headers = list(df)
 
     possible_location_names = ["location_name", "country_nane", "country", "location"]
@@ -38,9 +38,12 @@ def generate_config_options(df):
     if "year" in file_headers:
         config_options["COLUMN_MAPPINGS"]["year"] = str(df.year.max())
         config_options["CITATIONS"]["source_year"] = str(df.year.max())
-    print(config_options)
     return config_options
 
 def read_yaml():
-    yaml_to_json = yaml.load(config.FILE_PATHS['CONFIG_FILE'])
-    return yaml_to_json
+    try:
+        with open(config.FILE_PATHS["CONFIG_FILE"], 'r') as f:
+            yaml_to_json = yaml.load(f)
+        return yaml_to_json
+    except:
+        return None

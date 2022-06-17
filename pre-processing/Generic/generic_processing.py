@@ -18,10 +18,10 @@ import numpy as np
 from glob import glob
 import os
 from configobj import ConfigObj
-from sqlalchemy import false
 import generic_processing_config as config
 import yaml_utils
 from generic_processing_config import CONFIGURATION_OPTIONS
+import copy
 
 # Default column names and required
 DEFAULT_COLUMN_NAMES = {
@@ -82,9 +82,24 @@ def handle_normalization(df):
             print(f"Column Headers:\n {df_column_headers}")
             pivot_column = input("What column do you need to pivot on? (Enter column name or exit)")
 
+def process_country_rows(df, options):
+    c = coco.CountryConverter() 
+    location_column = options["COLUMN_MAPPINGS"]["location"]
+    df['location_name'] = df[location_column].apply(lambda x: c.convert(names = x, to='name_short', not_found = None))
+    df['iso3_location'] = df[location_column].apply(lambda x: c.convert(names = x, to = 'ISO3', not_found = None))
+    return df
+
 def process_generic_data(files, generate_config = False):
     #Should refactor this beginning part and extract function
     all_config_data = dict()
+
+    if generate_config == False:
+        config_options = yaml_utils.read_yaml()
+        print(config_options)
+        if config_options is None:
+            print("Config file missing, terminating script")
+            return None
+
     for filename in files:
         ext = os.path.splitext(filename)[1]
 
@@ -98,66 +113,45 @@ def process_generic_data(files, generate_config = False):
         else:
             raise RuntimeError('File extension not recognized')
 
+        short_filename = str(os.path.basename(filename))
         if (generate_config):
-            short_filename = str(os.path.basename(filename))
             generated_options = yaml_utils.generate_config_options(file)
-            all_config_data[short_filename] = generated_options
-            generated_options = {}
+            all_config_data[short_filename] = copy.deepcopy(generated_options)
             continue
-
-        file.columns = file.columns.str.lower()
-        file = fix_column_headers(file)
-
-        normalized = True # Need to create user input for this
-
-        #file = pd.DataFrame()
-        c = coco.CountryConverter() 
-
-        file_headers = list(file)
-        if 'location_name' in file_headers:
-            try: 
-                file['location_name'] = file['location_name'].apply(lambda x: c.convert(names = x, to='name_short', not_found = None))
-                file['iso3_location'] = file['location_name'].apply(lambda x: c.convert(names = x, to = 'ISO3', not_found = None))
-            except:
-                print("Error Occured: Check the file for footers")
-        elif 'iso3_location' in file_headers:
-            file['location_name'] = file['iso3_location'].apply(lambda x: c.convert(names = x, to='name_short', not_found = None))
-            file['iso3_location'] = file['iso3_location'].apply(lambda x: c.convert(names = x, to = 'ISO3', not_found = None))
+ 
+        if (short_filename not in config_options):
+            print(f"Missing {short_filename} in config file, skipping")
+            continue
         else:
-            print("Critical Error: Missing location_name or iso3_location column, teminating script")
-            return
+            file_config_options = config_options[short_filename]
 
-        file_headers = list(file)
+        file = process_country_rows(file, file_config_options)
+        print(f"Processing file: {short_filename}")
 
         # Need to write year hander for this.. should we use the most recent year with data? a static year with user input?
-        if 'year' in file_headers:
-            if year_consolidation:
-                if year != None:
-                    file = file.loc[file['year'] <= year] 
-
+        if 'year' in file_config_options["COLUMN_MAPPINGS"] and file_config_options["COLUMN_MAPPINGS"]['year'] is not None:
+            data_year = int(file_config_options["COLUMN_MAPPINGS"]["year"])
+            should_use_most_recent_year = file_config_options["COLUMN_MAPPINGS"]["use_most_recent_year_if_missing"]
+            if should_use_most_recent_year:
+                file = file.loc[file['year'] <= data_year] 
             else:
-                if year == None:
-                    year = file['year'].max()
-
-                file = file.loc[file['year'] == year]
-
-            file_headers.remove('year')
-            #print(file_headers)
+                file = file.loc[file['year'] == data_year]
             file = file.sort_values('year').groupby('location_name').tail(1)
             # file.loc[file.groupby(file_headers).year.idxmax()]
 
-        file = pivot_normalized_data(
-            file,
-            columns = ['test'],
-            val = 'val',
-            index = ['location_name', 'iso3_location', 'year']
-        )
+        is_pivot_active = file_config_options["PIVOT_DATA"]["enable"]
+        if is_pivot_active:
+            file = pivot_normalized_data(
+                file,
+                columns = ['test'],
+                val = 'val',
+                index = ['location_name', 'iso3_location', 'year']
+            )
 
         file = file.sort_values('location_name')
 
-        file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + filename.split('\\')[1] + '_output.xlsx', index = False)
+        file.to_excel(config.FILE_PATHS['OUTPUT_FOLDER'] + os.path.splitext(short_filename)[0] + '_output.xlsx', index = False)
     if generate_config:
-        print(all_config_data)
         yaml_utils.generate_config_file([], all_config_data)
 
 
@@ -165,4 +159,4 @@ data_path = (config.FILE_PATHS['INPUT_FOLDER'])
 file_path_names = glob(data_path + "\[!~]*.xlsx") + glob(data_path + "\[!~]*.csv") + glob(data_path + "\[!~]*.xls")
 file_names = [os.path.basename(x) for x in file_path_names]
 
-process_generic_data(file_path_names, True)
+process_generic_data(file_path_names, False)
